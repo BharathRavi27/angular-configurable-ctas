@@ -44,8 +44,7 @@ export class CtaConfigDirective implements AfterViewInit {
     private resolver: ComponentFactoryResolver,
     private render: Renderer2,
     private changeDetector: ChangeDetectorRef,
-    private injector: Injector,
-    private actionButtonService: ActionButtonService
+    private injector: Injector
   ) {}
 
   ngAfterViewInit(): void {
@@ -100,13 +99,9 @@ export class CtaConfigDirective implements AfterViewInit {
     this.changeDetector.detectChanges();
   }
 
-  activeFunction() {
-    debugger;
-    this.appCtaService.getConfig$().subscribe((data) => {
+  activeFunction = () => {
+    this.appCtaService.fireAction().subscribe((data) => {
       console.log('FIRED');
     });
-    // this.actionButtonService.onAction(IButtonAction.SEND).subscribe((data) => {
-    //   console.log(data);
-    // });
-  }
+  };
 }

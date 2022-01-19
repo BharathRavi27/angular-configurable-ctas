@@ -15,6 +15,7 @@ export class SendActionService implements BaseActionService {
     private acceessControlService: AccessControlService
   ) {}
   fireAction(): Observable<any> {
+    debugger;
     return combineLatest([this.acceessControlService.isEditPermitted$()]).pipe(
       map(([isEditPermitted]) => {
         if (isEditPermitted) {

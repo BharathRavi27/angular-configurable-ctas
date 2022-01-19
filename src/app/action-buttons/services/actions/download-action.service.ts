@@ -12,7 +12,7 @@ export class DownloadActionService implements BaseActionService {
   getConfig$() {
     return of({
       label: 'Download',
-      disabled: true,
+      disabled: false,
       hintText: 'Click to download',
     });
   }
