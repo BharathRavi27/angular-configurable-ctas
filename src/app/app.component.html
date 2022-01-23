@@ -1,9 +1,11 @@
 <div>
-  <button *appCtaConfig="sendAction">Send</button>
+  <ng-template [appCtaAction]="sendAction" (actionFired)="onSendAction()">
+    <button>Send</button></ng-template
+  >
 </div>
 <br />
 <div>
-  <button *appCtaConfig="downloadAction" (click)="onDownload()">
+  <button *appCtaAction="downloadAction" (click)="onDownload()">
     DOWNLOAD
   </button>
 </div>

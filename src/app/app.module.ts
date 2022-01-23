@@ -9,7 +9,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SendDialogComponent } from './actions/send-dialog/send-dialog.component';
 import { DownloadDialogComponent } from './actions/download-dialog/download-dialog.component';
 import { CtaConfigWrapperComponent } from './action-buttons/cta-config-wrapper/cta-config-wrapper.component';
-import { CtaConfigDirective } from './action-buttons/cta-config.directive';
+import { CtaActionDirective } from './action-buttons/cta-action.directive';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { CtaConfigDirective } from './action-buttons/cta-config.directive';
     SendDialogComponent,
     DownloadDialogComponent,
     CtaConfigWrapperComponent,
-    CtaConfigDirective,
+    CtaActionDirective,
   ],
   imports: [
     BrowserModule,
@@ -25,6 +26,7 @@ import { CtaConfigDirective } from './action-buttons/cta-config.directive';
     MatButtonModule,
     MatDialogModule,
     MatTooltipModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

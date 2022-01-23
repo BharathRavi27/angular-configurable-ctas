@@ -10,11 +10,11 @@ import {
   Renderer2,
   ChangeDetectorRef,
   Injector,
-  HostListener,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { ActionConfig, IButtonAction } from './action-button';
 import { CtaConfigWrapperComponent } from './cta-config-wrapper/cta-config-wrapper.component';
-import { ActionButtonService } from './services/action-button.service';
 import { DownloadActionService } from './services/actions/download-action.service';
 import { SendActionService } from './services/actions/send-action.service';
 import { BaseActionService } from './services/base-action.service';
@@ -24,17 +24,19 @@ const IButtonConfigMap = {
   [IButtonAction.DOWNLOAD]: DownloadActionService,
 };
 @Directive({
-  selector: '[appCtaConfig]',
+  selector: '[appCtaAction]',
 })
 /**
  * Structural directive that is tightly couple with thee IButtonAction configs, providing-
  * 1. Disabling functionality
  * 2. Tooltip messaging functionality
  */
-export class CtaConfigDirective implements AfterViewInit {
-  //   // Relevant config service.
+export class CtaActionDirective implements AfterViewInit {
+  // Relevant action service.
   appCtaService: BaseActionService;
-  @Input() appCtaConfig: IButtonAction;
+  @Input() appCtaAction: IButtonAction;
+
+  @Output() actionFired = new EventEmitter<void>();
   ctaWrapperComponentRef: ComponentRef<CtaConfigWrapperComponent>;
   templateView: EmbeddedViewRef<unknown>;
 
@@ -48,8 +50,7 @@ export class CtaConfigDirective implements AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
-    this.appCtaService = this.injector.get(IButtonConfigMap[this.appCtaConfig]);
-    debugger;
+    this.appCtaService = this.injector.get(IButtonConfigMap[this.appCtaAction]);
     this.appCtaService.getConfig$().subscribe((config) => {
       if (!this.templateView || !this.ctaWrapperComponentRef) {
         this.createView();
@@ -72,6 +73,7 @@ export class CtaConfigDirective implements AfterViewInit {
       this.viewContainer.injector,
       [this.templateView.rootNodes]
     );
+    // Attach click listener
     this.render.listen(
       this.templateView.rootNodes[0],
       'click',
@@ -79,11 +81,11 @@ export class CtaConfigDirective implements AfterViewInit {
     );
   }
 
-  //   /**
-  //    * Updates the following props
-  //    * 1. `disable` attribute to the button
-  //    * 2. `tooltipText` input to the wrapper
-  //    */
+  /**
+   * Updates the following props
+   * 1. `disable` attribute to the button
+   * 2. `tooltipText` input to the wrapper
+   */
   updateProps(config: ActionConfig): void {
     if (config.disabled) {
       this.render.setAttribute(
@@ -102,6 +104,7 @@ export class CtaConfigDirective implements AfterViewInit {
   activeFunction = () => {
     this.appCtaService.fireAction().subscribe((data) => {
       console.log('FIRED');
+      this.actionFired.emit();
     });
   };
 }

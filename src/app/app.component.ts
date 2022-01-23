@@ -33,4 +33,8 @@ export class AppComponent {
         console.log(data);
       });
   }
+
+  onSendAction() {
+    console.log('Woohoo');
+  }
 }

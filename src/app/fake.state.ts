@@ -1,3 +1,3 @@
 export const userPermissions = {
-    edit: true
-}
+  edit: false,
+};
